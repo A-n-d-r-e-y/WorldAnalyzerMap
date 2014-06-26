@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WorldAnalyzerMap
+namespace WorldAnalyzerMap.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Shell : Window
     {
-        public MainWindow()
+        public Shell()
         {
             InitializeComponent();
         }

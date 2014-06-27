@@ -10,27 +10,27 @@ using System.Windows.Threading;
 
 namespace WorldAnalyzerMap.ViewModel
 {
-    public class ShellViewModel : IObserver<DataMessageRepository>, INotifyPropertyChanged
+    public class ShellViewModel : IObserver<LivingEntityPointRepository>, INotifyPropertyChanged
     {
-        DataMessageRepository messageRepository;
+        LivingEntityPointRepository entityRepository;
 
-        public List<DataMessage> DataMessages
+        public List<LivingEntityPoint> DataMessages
         {
-            get { return messageRepository.GetDataMessages().ToList(); }
+            get { return entityRepository.GetDataMessages().ToList(); }
         }
 
         public int MessagesCount
         {
-            get { return messageRepository.GetDataMessages().Count(); }
+            get { return entityRepository.GetDataMessages().Count(); }
         }
 
-        public ShellViewModel(DataMessageRepository messageRepository)
+        public ShellViewModel(LivingEntityPointRepository entityRepository)
         {
-            if (messageRepository == null) throw new ArgumentNullException("messageRepository");
+            if (entityRepository == null) throw new ArgumentNullException("entityRepository");
 
-            this.messageRepository = messageRepository;
+            this.entityRepository = entityRepository;
 
-            messageRepository.StartListening();
+            entityRepository.StartListening();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -51,7 +51,7 @@ namespace WorldAnalyzerMap.ViewModel
             throw new NotImplementedException();
         }
 
-        public void OnNext(DataMessageRepository value)
+        public void OnNext(LivingEntityPointRepository value)
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {

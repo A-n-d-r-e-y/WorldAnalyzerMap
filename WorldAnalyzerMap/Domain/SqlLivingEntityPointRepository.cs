@@ -9,13 +9,13 @@ using System.Data;
 
 namespace WorldAnalyzerMap.Domain
 {
-    public class SqlDataMessageSource : DataMessageRepository
+    public class SqlLivingEntityPointRepository : LivingEntityPointRepository
     {
-        private List<IObserver<DataMessageRepository>> observers = new List<IObserver<DataMessageRepository>>();
+        private List<IObserver<LivingEntityPointRepository>> observers = new List<IObserver<LivingEntityPointRepository>>();
         private DataTable dt = new DataTable();
         private string connectionString;
 
-        public SqlDataMessageSource(string connectionString)
+        public SqlLivingEntityPointRepository(string connectionString)
         {
             if (string.IsNullOrWhiteSpace(connectionString)) throw new ArgumentNullException("connectionString");
 
@@ -26,7 +26,7 @@ namespace WorldAnalyzerMap.Domain
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                using (var command = new SqlCommand("SELECT id, msg FROM dbo.TableToTrank", connection))
+                using (var command = new SqlCommand("SELECT [id], [entity_type], [x], [y], [z] FROM [dbo].[test__]", connection))
                 {
                     SqlDependency dependency = new SqlDependency(command);
                     dependency.OnChange += new OnChangeEventHandler(OnMessage);
@@ -42,28 +42,29 @@ namespace WorldAnalyzerMap.Domain
             }
         }
 
-        public override IEnumerable<DataMessage> GetDataMessages()
+        public override IEnumerable<LivingEntityPoint> GetDataMessages()
         {
-            //return new DataMessage[] {
-            //    new DataMessage() { Message = "hello", },
-            //    new DataMessage() { Message = "from", },
-            //    new DataMessage() { Message = "Mars", },
-            //};
             var query =
                 from r in dt.Rows.Cast<DataRow>()
-                select new DataMessage() { Message = r["msg"].ToString(), };
+                select new LivingEntityPoint()
+                {
+                    EntityType = r.Field<string>("entity_type"),
+                    X = r.Field<double?>("x"),
+                    Y = r.Field<double?>("y"),
+                    Z = r.Field<double?>("z"),
+                };
 
             return query;
         }
 
-        public override IDisposable Subscribe(IObserver<DataMessageRepository> observer)
+        public override IDisposable Subscribe(IObserver<LivingEntityPointRepository> observer)
         {
             if (!this.observers.Contains(observer))
             {
                 this.observers.Add(observer);
             }
 
-            return new DataMessageRepository.Unsubscriber(this.observers, observer);
+            return new LivingEntityPointRepository.Unsubscriber(this.observers, observer);
         }
 
         public override void StartListening()

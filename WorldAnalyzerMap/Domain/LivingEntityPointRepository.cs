@@ -7,11 +7,11 @@ using WorldAnalyzerMap.Domain.Model;
 
 namespace WorldAnalyzerMap.Domain
 {
-    public abstract class DataMessageRepository : IObservable<DataMessageRepository>, IDisposable
+    public abstract class LivingEntityPointRepository : IObservable<LivingEntityPointRepository>, IDisposable
     {
-        public abstract IEnumerable<DataMessage> GetDataMessages();
+        public abstract IEnumerable<LivingEntityPoint> GetDataMessages();
 
-        public abstract IDisposable Subscribe(IObserver<DataMessageRepository> observer);
+        public abstract IDisposable Subscribe(IObserver<LivingEntityPointRepository> observer);
 
         public abstract void StartListening();
 
@@ -21,10 +21,10 @@ namespace WorldAnalyzerMap.Domain
 
         public class Unsubscriber : IDisposable
         {
-            private List<IObserver<DataMessageRepository>> _observers;
-            private IObserver<DataMessageRepository> _observer;
+            private List<IObserver<LivingEntityPointRepository>> _observers;
+            private IObserver<LivingEntityPointRepository> _observer;
 
-            public Unsubscriber(List<IObserver<DataMessageRepository>> observers, IObserver<DataMessageRepository> observer)
+            public Unsubscriber(List<IObserver<LivingEntityPointRepository>> observers, IObserver<LivingEntityPointRepository> observer)
             {
                 this._observers = observers;
                 this._observer = observer;

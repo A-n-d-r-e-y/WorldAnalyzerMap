@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorldAnalyzerMap.ViewModel;
 using WorldAnalyzerMap.View;
-using WorldAnalyzerMap.Design;
+//using WorldAnalyzerMap.Design;
 using WorldAnalyzerMap.Domain;
 using System.Data.SqlClient;
 
@@ -23,7 +23,7 @@ namespace WorldAnalyzerMap
             sb.IntegratedSecurity = true;
 
             var shell = new Shell();
-            var ms = new SqlDataMessageSource(sb.ConnectionString);
+            var ms = new SqlLivingEntityPointRepository(sb.ConnectionString);
             var vm = new ShellViewModel(ms);
 
             IDisposable disposer = ms.Subscribe(vm);
